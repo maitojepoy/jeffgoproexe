@@ -7,7 +7,7 @@ const delay = (t, v) => {
 }
 
 // eslint-disable-next-line no-extend-native
-Promise.prototype.delayResolve = (t = 1000) => {
+Promise.prototype.delayResolve = function (t = 1000) {
    return this.then(function(v) {
        return delay(t, v);
    });

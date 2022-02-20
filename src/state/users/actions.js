@@ -18,7 +18,7 @@ export const setUsersList = users => ({
 
 export const setUserCount = count => ({
   type: SET_USER_COUNT,
-  payload: { count },
+  payload: count,
 });
 
 export const pushNewUser = user => ({

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { max } from 'lodash';
+import { max, get } from 'lodash';
 
 export const getUsers = state => state.users;
 export const getUsersList = state => state.users.list;
@@ -9,8 +9,8 @@ export const getUserCount = state => state.users.total;
 
 export const getUsersListCondensed = createSelector(
   getUsersList,
-  users => users.map(({ id, name, username, email, address: { city } }) => (
-    { id, name, username, email, city }
+  users => users.map(({ id, name, username, email, address }) => (
+    { id, name, username, email, city: get(address, 'city', '') }
   )),
 );
 
