@@ -5,6 +5,7 @@ import {
   SET_USER_COUNT,
   SET_USER_LIST_LOADED,
   SET_SELECTED_USER,
+  PUT_USER,
 } from 'state/users/types';
 
 const toMap = array => array.reduce((acc, user) => {
@@ -18,7 +19,7 @@ export const map = (state = {}, action = {}) => {
       return toMap(action.payload.users);
     }
     case PUSH_NEW_USER:
-    case SET_SELECTED_USER: {
+    case PUT_USER: {
       return { ...state, [action.payload.id]: action.payload };
     }
     default: return state;
@@ -32,6 +33,23 @@ export const list = (state = [], action = {}) => {
     }
     case PUSH_NEW_USER: {
       return [...state, action.payload];
+    }
+    case PUT_USER: {
+      return state.map((user) => {
+        if (user.id === action.payload.id) {
+          return { ...user, ...action.payload };
+        }
+        return user;
+      });
+    }
+    default: return state;
+  }
+};
+
+export const selected = (state = {}, action = {}) => {
+  switch (action.type) {
+    case SET_SELECTED_USER: {
+      return action.payload;
     }
     default: return state;
   }
@@ -55,4 +73,4 @@ export const total = (state = 0, action = {}) => {
   }
 };
 
-export default combineReducers({ map, list, total, loaded });
+export default combineReducers({ map, list, selected, total, loaded });

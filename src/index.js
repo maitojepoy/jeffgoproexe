@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import IntlProviderContainer from 'locale/IntlProviderContainer';
-import App from 'ui/App';
+import AppContainer from 'ui/AppContainer';
 import reportWebVitals from './reportWebVitals';
 
 import store from 'state/store';
@@ -12,7 +12,7 @@ ReactDOM.render(
   <Provider store={store}>
     <IntlProviderContainer>
       <Router>
-        <App />
+        <AppContainer />
       </Router>
     </IntlProviderContainer>
   </Provider>,

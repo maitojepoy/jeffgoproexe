@@ -6,6 +6,7 @@ import { ROUTE_DASHBOARD } from 'routes';
 import UserForm from 'ui/users/UserForm';
 
 const mapStateToProps = () => ({
+  loading: false,
   initialValues: DEFAULT_FORM_VALUES,
 });
 

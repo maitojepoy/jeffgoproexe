@@ -21,5 +21,6 @@ const invokeFakeResolve = payload => Promise.resolve({
 export const getUsers = () => fetch(userUrl, { method: 'GET' });
 
 export const postUser = user => invokeFakeResolve(user);
+export const getUser = user => invokeFakeResolve(user);
 export const putUser = user => invokeFakeResolve(user);
 export const deleteUser = user => invokeFakeResolve(user);

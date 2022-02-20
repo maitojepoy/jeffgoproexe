@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -18,11 +18,7 @@ import Button from '@mui/material/Button';
 
 import { ROUTE_USER_ADD } from 'routes';
 
-const UsersList = ({ users, loaded, loading, onPageMount }) => {
-  useEffect(() => {
-    onPageMount();
-  }, []);
-
+const UsersList = ({ users, loaded, loading, onClickEditUser }) => {
   if (!loaded || loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -64,7 +60,9 @@ const UsersList = ({ users, loaded, loading, onPageMount }) => {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.city}</TableCell>
                 <TableCell align="center">
-                  <Button variant="contained" color="warning"><FormattedMessage id="label.button.edit" /></Button>
+                  <Button variant="contained" color="warning" onClick={() => onClickEditUser(user.id)}>
+                    <FormattedMessage id="label.button.edit" />
+                  </Button>
                 </TableCell>
                 <TableCell align="center">
                   <Button variant="contained" color="error"><FormattedMessage id="label.button.delete" /></Button>
@@ -87,7 +85,7 @@ UsersList.propTypes = {
   })),
   loaded: PropTypes.bool,
   loading: PropTypes.bool,
-  onPageMount: PropTypes.func.isRequired,
+  onClickEditUser: PropTypes.func.isRequired,
 };
 
 UsersList.defaultProps = {

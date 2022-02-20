@@ -3,11 +3,17 @@ import {
   SET_USER_COUNT,
   PUSH_NEW_USER,
   SET_SELECTED_USER,
+  PUT_USER,
   SET_USER_LIST_LOADED,
 } from 'state/users/types';
-import { getUsers, postUser, putUser } from 'api/users';
+import { getUsers, postUser, getUser, putUser } from 'api/users';
 import { toggleLoading } from 'state/loading/actions';
-import { getUserListLoaded, getUserCount, getLastUserId } from 'state/users/selectors';
+import {
+  getUserListLoaded,
+  getUserCount,
+  getUserById,
+  getLastUserId,
+} from 'state/users/selectors';
 
 export const setUsersList = users => ({
   type: SET_USERS,
@@ -28,6 +34,11 @@ export const pushNewUser = user => ({
 
 export const setSelectedUser = user => ({
   type: SET_SELECTED_USER,
+  payload: user,
+});
+
+export const setPutUser = user => ({
+  type: PUT_USER,
   payload: user,
 });
 
@@ -61,6 +72,23 @@ export const fetchUsers = () => (dispatch, getState) => (
   })
 );
 
+export const fetchUser = userId => (dispatch, getState) => (
+  new Promise((resolve) => {
+    const user = getUserById(userId)(getState());
+    dispatch(toggleLoading('selecteduser'));
+    getUser(user).then((response) => {
+      if (response.ok) {
+        dispatch(setSelectedUser(response.payload));
+      } else {
+        // dispatch(addErrors(json.errors.map(err => err.message)));
+        // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+      }
+      dispatch(toggleLoading('selecteduser'));
+      resolve();
+    }).catch(() => {});
+  })
+);
+
 export const sendPostUser = user => (dispatch, getState) => (
   new Promise((resolve) => {
     const state = getState();
@@ -78,4 +106,18 @@ export const sendPostUser = user => (dispatch, getState) => (
     }).catch(() => {});
   })
 );
-  
+
+export const sendPutUser = user => dispatch => (
+  new Promise((resolve) => {
+    putUser(user).then((response) => {
+      if (response.ok) {
+        console.log('putted', response);
+        dispatch(setPutUser(response.payload));
+      } else {
+        // dispatch(addErrors(json.errors.map(e => e.message)));
+        // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+      }
+      resolve();
+    }).catch(() => {});
+  })
+);

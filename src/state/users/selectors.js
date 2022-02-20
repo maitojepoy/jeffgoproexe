@@ -4,8 +4,14 @@ import { max, get } from 'lodash';
 export const getUsers = state => state.users;
 export const getUsersList = state => state.users.list;
 export const getUsersMap = state => state.users.map;
+export const getSelectedUser = state => state.users.selected;
 export const getUserListLoaded = state => state.users.loaded;
 export const getUserCount = state => state.users.total;
+
+export const getUserById = id => createSelector(
+  getUsersMap,
+  users => users[id],
+);
 
 export const getUsersListCondensed = createSelector(
   getUsersList,

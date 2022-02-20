@@ -11,6 +11,7 @@ export const RenderTextField = ({
   form,
   disabled,
   type,
+  editMode,
 }) => {
   const { touched, error } = getTouchErrorByField(field.name, form);
   return (
@@ -23,6 +24,8 @@ export const RenderTextField = ({
       label={label}
       helperText={append}
       disabled={disabled}
+      variant="outlined"
+      InputLabelProps={{ shrink: true }}
       sx={{ mb: theme => theme.spacing(3) }}
     />
   );
@@ -41,6 +44,7 @@ RenderTextField.propTypes = {
   disabled: PropTypes.bool,
   type: PropTypes.string,
   append: PropTypes.string,
+  editMode: PropTypes.bool,
 };
 
 RenderTextField.defaultProps = {
@@ -50,6 +54,7 @@ RenderTextField.defaultProps = {
   type: 'text',
   append: '',
   form: {},
+  editMode: false,
 };
 
 export default RenderTextField;
