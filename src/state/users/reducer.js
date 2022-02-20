@@ -6,12 +6,9 @@ import {
   SET_USER_LIST_LOADED,
   SET_SELECTED_USER,
   PUT_USER,
+  DELETE_USER,
 } from 'state/users/types';
-
-const toMap = array => array.reduce((acc, user) => {
-  acc[user.id] = user;
-  return acc;
-}, {});
+import { toMap, removePropFromObject } from 'helpers/collection';
 
 export const map = (state = {}, action = {}) => {
   switch (action.type) {
@@ -21,6 +18,9 @@ export const map = (state = {}, action = {}) => {
     case PUSH_NEW_USER:
     case PUT_USER: {
       return { ...state, [action.payload.id]: action.payload };
+    }
+    case DELETE_USER: {
+      return removePropFromObject(state, action.payload.id);
     }
     default: return state;
   }
@@ -41,6 +41,9 @@ export const list = (state = [], action = {}) => {
         }
         return user;
       });
+    }
+    case DELETE_USER: {
+      return state.filter(user => user.id !== action.payload.id);
     }
     default: return state;
   }

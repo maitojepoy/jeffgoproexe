@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { intlShape, FormattedMessage } from 'react-intl';
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -115,4 +115,4 @@ const UserForm = withFormik({
   displayName: 'groupForm',
 })(UserFormBody);
 
-export default injectIntl(UserForm);
+export default UserForm;

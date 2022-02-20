@@ -4,9 +4,10 @@ import {
   PUSH_NEW_USER,
   SET_SELECTED_USER,
   PUT_USER,
+  DELETE_USER,
   SET_USER_LIST_LOADED,
 } from 'state/users/types';
-import { getUsers, postUser, getUser, putUser } from 'api/users';
+import { getUsers, postUser, getUser, putUser, deleteUser } from 'api/users';
 import { toggleLoading } from 'state/loading/actions';
 import {
   getUserListLoaded,
@@ -42,6 +43,11 @@ export const setPutUser = user => ({
   payload: user,
 });
 
+export const setDeleteUser = user => ({
+  type: DELETE_USER,
+  payload: user,
+});
+
 export const markUserListLoaded = () => ({
   type: SET_USER_LIST_LOADED,
   payload: true,
@@ -58,9 +64,6 @@ export const fetchUsers = () => (dispatch, getState) => (
             dispatch(setUsersList(json));
             dispatch(setUserCount(json.length));
             dispatch(markUserListLoaded());
-          } else {
-            // dispatch(addErrors(json.errors.map(err => err.message)));
-            // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
           }
           dispatch(toggleLoading('userlist'));
           resolve();
@@ -79,9 +82,6 @@ export const fetchUser = userId => (dispatch, getState) => (
     getUser(user).then((response) => {
       if (response.ok) {
         dispatch(setSelectedUser(response.payload));
-      } else {
-        // dispatch(addErrors(json.errors.map(err => err.message)));
-        // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
       }
       dispatch(toggleLoading('selecteduser'));
       resolve();
@@ -98,9 +98,6 @@ export const sendPostUser = user => (dispatch, getState) => (
       if (response.ok) {
         dispatch(pushNewUser(response.payload));
         dispatch(setUserCount(count + 1));
-      } else {
-        // dispatch(addErrors(json.errors.map(e => e.message)));
-        // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
       }
       resolve();
     }).catch(() => {});
@@ -111,11 +108,18 @@ export const sendPutUser = user => dispatch => (
   new Promise((resolve) => {
     putUser(user).then((response) => {
       if (response.ok) {
-        console.log('putted', response);
         dispatch(setPutUser(response.payload));
-      } else {
-        // dispatch(addErrors(json.errors.map(e => e.message)));
-        // json.errors.forEach(err => dispatch(addToast(err.message, TOAST_ERROR)));
+      }
+      resolve();
+    }).catch(() => {});
+  })
+);
+
+export const sendDeleteUser = user => dispatch => (
+  new Promise((resolve) => {
+    deleteUser(user).then((response) => {
+      if (response.ok) {
+        dispatch(setDeleteUser(response.payload));
       }
       resolve();
     }).catch(() => {});

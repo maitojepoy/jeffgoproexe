@@ -18,7 +18,7 @@ import Button from '@mui/material/Button';
 
 import { ROUTE_USER_ADD } from 'routes';
 
-const UsersList = ({ users, loaded, loading, onClickEditUser }) => {
+const UsersList = ({ users, loaded, loading, onClickEditUser, onConfirmDelete }) => {
   if (!loaded || loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -65,7 +65,9 @@ const UsersList = ({ users, loaded, loading, onClickEditUser }) => {
                   </Button>
                 </TableCell>
                 <TableCell align="center">
-                  <Button variant="contained" color="error"><FormattedMessage id="label.button.delete" /></Button>
+                  <Button variant="contained" color="error" onClick={() => onConfirmDelete(user)}>
+                    <FormattedMessage id="label.button.delete" />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -81,11 +83,12 @@ UsersList.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     username: PropTypes.string,
-    email: PropTypes.string,
+  email: PropTypes.string,
   })),
   loaded: PropTypes.bool,
   loading: PropTypes.bool,
   onClickEditUser: PropTypes.func.isRequired,
+  onConfirmDelete: PropTypes.func.isRequired,
 };
 
 UsersList.defaultProps = {
