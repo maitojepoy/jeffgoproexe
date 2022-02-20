@@ -61,7 +61,9 @@ const UserFormBody = ({
             variant="contained"
             color="success"
             disabled={!isValid || isSubmitting}
-          >Submit</Button>
+          >
+            <FormattedMessage id={isSubmitting ? 'label.button.saving' : 'label.button.submit'} />
+          </Button>
         </Box>
       </Form>
     </Paper>
@@ -106,6 +108,7 @@ const UserForm = withFormik({
       name: Yup.string()
         .required(intl.formatMessage({ id: 'label.form.fieldRequired' })),
       email: Yup.string()
+        .email(intl.formatMessage({ id: 'label.form.emailFormat' }))
         .required(intl.formatMessage({ id: 'label.form.fieldRequired' })),
     })
   ),

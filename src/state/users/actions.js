@@ -6,6 +6,7 @@ import {
   PUT_USER,
   DELETE_USER,
   SET_USER_LIST_LOADED,
+  SET_USER_LIST_SORT,
 } from 'state/users/types';
 import { getUsers, postUser, getUser, putUser, deleteUser } from 'api/users';
 import { toggleLoading } from 'state/loading/actions';
@@ -46,6 +47,11 @@ export const setPutUser = user => ({
 export const setDeleteUser = user => ({
   type: DELETE_USER,
   payload: user,
+});
+
+export const setUserListSort = (column, direction = 'asc') => ({
+  type: SET_USER_LIST_SORT,
+  payload: { column, direction },
 });
 
 export const markUserListLoaded = () => ({

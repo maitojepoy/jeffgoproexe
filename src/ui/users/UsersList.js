@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { visuallyHidden } from '@mui/utils';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -18,7 +20,7 @@ import Button from '@mui/material/Button';
 
 import { ROUTE_USER_ADD } from 'routes';
 
-const UsersList = ({ users, loaded, loading, onClickEditUser, onConfirmDelete }) => {
+const UsersList = ({ users, loaded, loading, sortSettings, onSetUserListSort, onClickEditUser, onConfirmDelete }) => {
   if (!loaded || loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -37,11 +39,30 @@ const UsersList = ({ users, loaded, loading, onClickEditUser, onConfirmDelete })
         <Table aria-label="Users List Table">
           <TableHead>
             <TableRow>
-              <TableCell align="center"><FormattedMessage id="label.user.id" /></TableCell>
-              <TableCell align="center"><FormattedMessage id="label.user.name" /></TableCell>
-              <TableCell align="center"><FormattedMessage id="label.user.username" /></TableCell>
-              <TableCell align="center"><FormattedMessage id="label.user.email" /></TableCell>
-              <TableCell align="center"><FormattedMessage id="label.user.city" /></TableCell>
+              {['id', 'name', 'username', 'email', 'city'].map(column => (
+                <TableCell
+                  key={column}
+                  align="center"
+                  sortDirection={sortSettings.column === column ? sortSettings.direction : false}
+                >
+                  <TableSortLabel
+                    active={sortSettings.column === column}
+                    direction={sortSettings.column === column ? sortSettings.direction : 'asc'}
+                    onClick={() => {
+                      const { column: currentColumn, direction: currentDir } = sortSettings;
+                      const oppositeCurrDir = currentDir === 'asc' ? 'desc' : 'asc';
+                      onSetUserListSort(column, currentColumn === column ? oppositeCurrDir : 'asc');
+                    }}
+                  >
+                    <FormattedMessage id={`label.user.${column}`} />
+                    {sortSettings.column === column ? (
+                      <Box component="span" sx={visuallyHidden}>
+                        {sortSettings.direction === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                      </Box>
+                    ) : null}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
               <TableCell align="center"><FormattedMessage id="label.button.edit" /></TableCell>
               <TableCell align="center"><FormattedMessage id="label.button.delete" /></TableCell>
             </TableRow>
@@ -83,10 +104,15 @@ UsersList.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     username: PropTypes.string,
-  email: PropTypes.string,
+    email: PropTypes.string,
   })),
+  sortSettings: PropTypes.shape({
+    column: PropTypes.string,
+    direction: PropTypes.string,
+  }).isRequired,
   loaded: PropTypes.bool,
   loading: PropTypes.bool,
+  onSetUserListSort: PropTypes.func.isRequired,
   onClickEditUser: PropTypes.func.isRequired,
   onConfirmDelete: PropTypes.func.isRequired,
 };

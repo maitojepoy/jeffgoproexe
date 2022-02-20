@@ -11,7 +11,6 @@ export const RenderTextField = ({
   form,
   disabled,
   type,
-  editMode,
 }) => {
   const { touched, error } = getTouchErrorByField(field.name, form);
   return (
@@ -22,7 +21,7 @@ export const RenderTextField = ({
       error={touched && error}
       id={field.name}
       label={label}
-      helperText={append}
+      helperText={error || append}
       disabled={disabled}
       variant="outlined"
       InputLabelProps={{ shrink: true }}

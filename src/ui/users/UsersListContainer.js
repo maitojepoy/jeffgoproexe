@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
 import { getLoading } from 'state/loading/selectors';
-import { sendDeleteUser } from 'state/users/actions';
-import { getUserListLoaded, getUsersListCondensed } from 'state/users/selectors';
+import { sendDeleteUser, setUserListSort } from 'state/users/actions';
+import { getUserListLoaded, getUsersListCondensed, getUserListSort } from 'state/users/selectors';
 import { openAskDialog } from 'state/prompter/actions';
 import { addToast } from 'state/toasts/actions';
 import { TOAST_INFO } from 'state/toasts/const';
@@ -16,6 +16,7 @@ import UsersList from 'ui/users/UsersList';
 
 const mapStateToProps = state => ({
   loaded: getUserListLoaded(state),
+  sortSettings: getUserListSort(state),
   loading: get(getLoading(state), 'userlist', false),
   users: getUsersListCondensed(state),
 });
@@ -34,6 +35,7 @@ const mapDispatchToProps = (dispatch, { history, intl }) => ({
       }
     })
   ),
+  onSetUserListSort: (column, direction) => dispatch(setUserListSort(column, direction)),
 });
 
 const UsersListContainer = connect(

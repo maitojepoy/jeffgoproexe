@@ -5,6 +5,7 @@ import {
   SET_USER_COUNT,
   SET_USER_LIST_LOADED,
   SET_SELECTED_USER,
+  SET_USER_LIST_SORT,
   PUT_USER,
   DELETE_USER,
 } from 'state/users/types';
@@ -49,6 +50,15 @@ export const list = (state = [], action = {}) => {
   }
 };
 
+export const listSort = (state = { column: 'id', direction: 'asc' }, action = {}) => {
+  switch(action.type) {
+    case SET_USER_LIST_SORT: {
+      return action.payload;
+    }
+    default: return state;
+  }
+};
+
 export const selected = (state = {}, action = {}) => {
   switch (action.type) {
     case SET_SELECTED_USER: {
@@ -76,4 +86,4 @@ export const total = (state = 0, action = {}) => {
   }
 };
 
-export default combineReducers({ map, list, selected, total, loaded });
+export default combineReducers({ map, list, listSort, selected, total, loaded });
